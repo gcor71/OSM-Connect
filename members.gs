@@ -17,7 +17,8 @@ function show_fetch_members_dialog() {
   var osm = OSM(service).init();
   try {    
     var template = HtmlService.createTemplateFromFile('DialogFetchMembers');
-    template.sections = osm.fetch_roles(true, 'member');    
+    //template.sections = osm.fetch_roles(true, 'member');    
+    template.sections = osm.fetch_roles(false, 'member');    
     //.setSandboxMode(HtmlService.SandboxMode.IFRAME);
     SpreadsheetApp.getUi().showModalDialog(template.evaluate(), 'Select sections.');
   } catch(e) {
@@ -29,7 +30,7 @@ function action_fetch_members(params) {
   var service = getOSMService();
   var osm = OSM(service).init();
 
-  var all_sections = osm.fetch_roles(true, 'member');
+  var all_sections = osm.fetch_roles(false, 'member');
 
   var sections = params.map(
     function(elem) {
@@ -59,12 +60,12 @@ function members(fetch_members_func) {
       "first_name",
       "last_name",
       "date_of_birth",
-      "patrol",
+      "postcode",
       "started",
       "joined",
       "age",
-      "sex",
-      "subs"];
+      "email",
+      "telephone number"];
 
     var data = [headers];
     
@@ -79,10 +80,12 @@ function members(fetch_members_func) {
               row.push(new Date());
             } else if (headers[i] == "date_of_birth") {
               row.push(new Date(member['date_of_birth']));
-            } else if (headers[i] == "sex") {
-              row.push(member['custom_data'][7]["34"]); // You just have to know that it is here!
-            } else if (headers[i] == "subs") {
-              row.push(member['custom_data'][5]["8709"]); // You just have to know that it is here!
+            } else if (headers[i] == "email") {
+              row.push(member['custom_data'][1][12]);
+            } else if (headers[i] == "postcode") {
+              row.push(member['custom_data'][1][11]);
+            } else if (headers[i] == "telephone number") {
+              row.push(member['custom_data'][1][18]);
             } else { // else use header name to get data
               var cell = member[headers[i]];
               if (cell != undefined) {

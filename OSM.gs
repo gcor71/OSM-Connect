@@ -25,7 +25,8 @@ function OSM(OSMService) {
 class OSM_ {
   constructor(OSMService) {
     this.service = OSMService;
-    this.cache_expiry = 60 * 60; // Cache expires after 1 hour.
+    //this.cache_expiry = 60 * 60; // Cache expires after 1 hour.
+    this.cache_expiry = 30; // Cache expires after 1 hour.
     this.fetcher = UrlFetchApp.fetch; // Allow for injecting test version.
     this.ratelimit_remaining = -1; // This will be set by the first fetch.
     this.ratelimit_reset = -1; // This will be set by the first fetch.
@@ -43,12 +44,10 @@ class OSM_ {
       undefined, undefined, 'get');
     this.sections = resources.data.sections;
     this.scopes = resources.data.scopes;
-
     return this;
   }
 
   fetch(url, section_id, term_id, method) {
-
     // Add the base url if a full url is not provided.
     if (!url.startsWith("https://")) {
       var url = BASE_URL + url;
@@ -96,7 +95,6 @@ class OSM_ {
   }
 
   fetch_(url, section_id, term_id, method) {
-
     var values = {};
 
     if (typeof section_id !== 'undefined') {
@@ -182,12 +180,14 @@ class OSM_ {
 
     // Sort the sections in a natural order to help with UI display.
     var sorted_roles = [].concat(
+      roles.filter(function (elem) { return (elem.section === "waiting") }),
       roles.filter(function (elem) { return (elem.section === "earlyyears") }),
       roles.filter(function (elem) { return (elem.section === "beavers") }),
       roles.filter(function (elem) { return (elem.section === "cubs") }),
       roles.filter(function (elem) { return (elem.section === "scouts") }),
       roles.filter(function (elem) {
         return (
+          (elem.section != "waiting") &&
           (elem.section != "earlyyears") &&
           (elem.section != "beavers") &&
           (elem.section != "cubs") &&
@@ -320,9 +320,8 @@ class OSM_ {
 
   fetch_members(section) {
     var result = this.fetch(
-      "ext/members/contact/grid/?action=getMembers" + "&dateFormat=uk",
-      section.sectionid,
-      this.active_term_id(section.sectionid));
+      "ext/members/contact/grid/?action=getMembers" + "&term_id=-1",
+      section.sectionid);
     var values = [];
     for (var key in result.data) {
       values.push(result.data[key]);
@@ -334,6 +333,7 @@ class OSM_ {
         return elem;
       }
     );
+    Logger.log("result: " + result);
     return result;
   }
 
