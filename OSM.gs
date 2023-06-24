@@ -178,7 +178,8 @@ class OSM_ {
         });
     }
 
-    // Sort the sections in a natural order to help with UI display.
+
+   // Sort the sections in a natural order to help with UI display.
     var sorted_roles = [].concat(
       roles.filter(function (elem) { return (elem.section === "waiting") }),
       roles.filter(function (elem) { return (elem.section === "earlyyears") }),
@@ -195,7 +196,9 @@ class OSM_ {
       })
     );
     return sorted_roles;
+
   };
+
 
   authorised_sections() {
     var roles = this.fetch_roles();
@@ -328,12 +331,11 @@ class OSM_ {
     }
     result = values.map(
       function (elem) {
-        elem['section_name'] = section.sectionname;
+        elem['section_name'] = section.groupname;
         elem['section_type'] = section.section;
         return elem;
       }
     );
-    Logger.log("result: " + result);
     return result;
   }
 

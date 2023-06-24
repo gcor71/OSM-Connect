@@ -5,9 +5,7 @@ function OSMFETCHMEMBERS() {
 }
 
 function test_members() {
- 
   //logout();  // Reset Oauth tokens
- 
   action_fetch_members(["12700"]);
 }
 
