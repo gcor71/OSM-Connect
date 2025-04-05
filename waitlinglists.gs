@@ -59,9 +59,7 @@ function waiting_members(fetch_members_func) {
       "patrol",
       "started",
       "joined",
-      "age",
-      "sex",
-      "subs"];
+      "age"];
 
     var data = [headers];
     
@@ -76,10 +74,6 @@ function waiting_members(fetch_members_func) {
               row.push(new Date());
             } else if (headers[i] == "date_of_birth") {
               row.push(new Date(member['date_of_birth']));
-            } else if (headers[i] == "sex") {
-              row.push(member['custom_data'][7]["34"]); // You just have to know that it is here!
-            } else if (headers[i] == "subs") {
-              row.push(member['custom_data'][5]["8709"]); // You just have to know that it is here!
             } else { // else use header name to get data
               var cell = member[headers[i]];
               if (cell != undefined) {

@@ -10,8 +10,8 @@ function getOSMService() {
   // Google Sheets OSM App creds
   if (DEV_MODE) {
     // Add creds here for debugging. NEVER publish with creds here!
-    var client_id = 'C9OwnG8czhiLUVUuIBCyim8mulsS8SWU';
-    var client_secret = 'a0WAF80ciWyjzCl4ktDcBjJerNEzmdGxayvQBmI0YB7RiUUHCnGCYtlaxPLm505c';
+    var client_id = 'VSEbdNLaRL48tSVjGuuTOiHeAI8EH2xI';
+    var client_secret = 'sSCdom50tIRpVuqw1Y8xLNjvQSu6ZW0k7RK2ACWj61uCrAkmpmwzbWIH1I8lZGGv';
   } else {
     var client_id = fetch_userid();
     var client_secret = fetch_secret();
